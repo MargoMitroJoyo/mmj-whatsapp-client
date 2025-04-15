@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set output directory
-OUTPUT_DIR="./.dist/bin"
+OUTPUT_DIR="./build/bin"
 OUTPUT_FILE="$OUTPUT_DIR/main"
 
 # Ensure the output directory exists

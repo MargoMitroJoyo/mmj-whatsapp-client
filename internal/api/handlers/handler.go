@@ -2,8 +2,10 @@ package handlers
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/tegaraditya/mmj-whatsapp-client/internal/api/requests"
 	"github.com/tegaraditya/mmj-whatsapp-client/pkg/whatsapp"
 )
 
@@ -20,10 +22,7 @@ func (h *Handler) GetAppInfo(c *fiber.Ctx) error {
 }
 
 func (h *Handler) SendMessage(c *fiber.Ctx) error {
-	var req struct {
-		To      string `json:"to"`
-		Message string `json:"message"`
-	}
+	var req requests.SendMessageRequest
 
 	if err := c.BodyParser(&req); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -31,14 +30,14 @@ func (h *Handler) SendMessage(c *fiber.Ctx) error {
 		})
 	}
 
-	if req.To == "" || req.Message == "" {
+	if err := req.Validate(); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Missing required fields",
+			"error":  "Validation failed",
+			"fields": err,
 		})
 	}
 
-	err := h.Client.SendMessage(req.To, req.Message)
-	if err != nil {
+	if err := h.Client.SendMessage(strings.ReplaceAll(req.To, "+", ""), req.Message); err != nil {
 		panic(fmt.Sprintf("Failed to send message: %v", err))
 	}
 

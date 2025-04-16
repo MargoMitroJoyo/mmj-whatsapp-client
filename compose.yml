@@ -1,9 +1,7 @@
 services:
   app:
     build: .
-    env_file:
-      - .env
     volumes:
       - ./.store/:/.store/
     ports:
-      - "3000:3000"
+      - "${PORT}:3000"

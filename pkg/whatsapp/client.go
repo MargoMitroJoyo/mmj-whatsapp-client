@@ -67,7 +67,11 @@ func (wac *WhatsAppClient) Start() error {
 		for evt := range qrChan {
 			if evt.Event == "code" {
 				fmt.Println("Scan the QR code to log in:")
-				qrterminal.Generate(evt.Code, qrterminal.L, os.Stdout)
+				qrterminal.GenerateWithConfig(evt.Code, qrterminal.Config{
+					Level:      qrterminal.L,
+					Writer:     os.Stdout,
+					HalfBlocks: true,
+				})
 			} else {
 				fmt.Println("Login event:", evt.Event)
 			}

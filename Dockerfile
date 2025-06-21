@@ -1,16 +1,18 @@
-FROM golang:1.24.2 AS builder
+FROM golang:1.24-alpine AS builder
 
 WORKDIR /go/src/app
 
-COPY . .
+COPY go.mod go.sum ./
 
 RUN go mod download
+
+COPY . .
 
 RUN chmod +x ./build.sh
 
 RUN ./build.sh
 
-FROM gcr.io/distroless/base-debian12 AS final
+FROM gcr.io/distroless/static-debian12 AS final
 
 COPY --from=builder /go/src/app/build/bin/main /app
 

@@ -21,7 +21,7 @@ import (
 func main() {
 	err := godotenv.Load()
 	if err != nil {
-		fmt.Printf("Failed to load .env file: %v", err)
+		fmt.Printf("Failed to load .env file: %v. ", err)
 		fmt.Println("Using default environment variables")
 	}
 

@@ -13,7 +13,7 @@ import (
 	waLog "go.mau.fi/whatsmeow/util/log"
 	"google.golang.org/protobuf/proto"
 
-	_ "github.com/mattn/go-sqlite3"
+	_ "modernc.org/sqlite"
 )
 
 // WhatsAppClient is a wrapper around the whatsmeow.Client
@@ -24,12 +24,12 @@ type WhatsAppClient struct {
 // Initializes a new WhatsApp client with SQLite store.
 func NewClient() (*WhatsAppClient, error) {
 	dbLog := waLog.Stdout("Database", "INFO", true)
-	container, err := sqlstore.New("sqlite3", "file:.store/session.db?_foreign_keys=on", dbLog)
+	container, err := sqlstore.New(context.Background(), "sqlite", "file:.store/session.db?_pragma=journal_mode(WAL)&_pragma=busy_timeout(5000)&_pragma=foreign_keys(ON)", dbLog)
 	if err != nil {
 		return nil, err
 	}
 
-	deviceStore, err := container.GetFirstDevice()
+	deviceStore, err := container.GetFirstDevice(context.Background())
 	if err != nil {
 		return nil, err
 	}

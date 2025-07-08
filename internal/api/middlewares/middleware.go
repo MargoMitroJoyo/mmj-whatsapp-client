@@ -31,7 +31,7 @@ func isPrivateIP(ip net.IP) bool {
 	return false
 }
 
-// AuthorizeIP is a middleware that checks if the request comes from an authorized IP address.
+// AuthorizeIP checks if the request comes from an authorized IP address.
 func AuthorizeIP() fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		ip := net.ParseIP(c.IP())

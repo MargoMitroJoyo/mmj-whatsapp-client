@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net"
 
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 )
 
 var privateIPBlocks []*net.IPNet
@@ -33,7 +33,7 @@ func isPrivateIP(ip net.IP) bool {
 
 // AuthorizeIP checks if the request comes from an authorized IP address.
 func AuthorizeIP() fiber.Handler {
-	return func(c *fiber.Ctx) error {
+	return func(c fiber.Ctx) error {
 		ip := net.ParseIP(c.IP())
 		if ip == nil || !isPrivateIP(ip) {
 			return c.Status(fiber.StatusForbidden).SendString(fmt.Sprintf("IP %s is not authorized", c.IP()))

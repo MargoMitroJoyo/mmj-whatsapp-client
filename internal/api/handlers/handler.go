@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 	"github.com/tegaraditya/mmj-whatsapp-client/internal/api/requests"
 	"github.com/tegaraditya/mmj-whatsapp-client/pkg/whatsapp"
 )
@@ -17,14 +17,14 @@ func CreateHandler(client *whatsapp.WhatsAppClient) *Handler {
 	return &Handler{Client: client}
 }
 
-func (h *Handler) GetAppInfo(c *fiber.Ctx) error {
+func (h *Handler) GetAppInfo(c fiber.Ctx) error {
 	return c.SendString("WhatsApp Client API")
 }
 
-func (h *Handler) SendMessage(c *fiber.Ctx) error {
+func (h *Handler) SendMessage(c fiber.Ctx) error {
 	var req requests.SendMessageRequest
 
-	if err := c.BodyParser(&req); err != nil {
+	if err := c.Bind().Body(&req); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": "Invalid request format",
 		})

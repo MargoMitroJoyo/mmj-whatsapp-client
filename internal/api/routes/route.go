@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 	"github.com/tegaraditya/mmj-whatsapp-client/internal/api/handlers"
 	"github.com/tegaraditya/mmj-whatsapp-client/internal/api/middlewares"
 	"github.com/tegaraditya/mmj-whatsapp-client/pkg/whatsapp"

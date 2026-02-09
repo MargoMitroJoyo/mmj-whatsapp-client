@@ -33,26 +33,12 @@ func main() {
 
 	app.Use(cors.New())
 	app.Use(helmet.New())
-	app.Get(healthcheck.LivenessEndpoint, healthcheck.New())
 	app.Use(logger.New())
+
+	app.Get(healthcheck.LivenessEndpoint, healthcheck.New())
+	app.Get(healthcheck.ReadinessEndpoint, healthcheck.New())
 
 	client, err := whatsapp.NewClient()
-	if err != nil {
-		panic(fmt.Sprintf("Failed to create WhatsApp client: %v", err))
-	}
-
-	err = client.Start()
-	if err != nil {
-		panic(fmt.Sprintf("Failed to start WhatsApp client: %v", err))
-	}
-
-	routes.SetupRoutes(app, client)
-
-	log.Fatal(app.Listen(fmt.Sprintf(":%s", "3000")))
-	app.Get(healthcheck.ReadinessEndpoint, healthcheck.New())
-	app.Use(logger.New())
-
-	client, err = whatsapp.NewClient()
 	if err != nil {
 		panic(fmt.Sprintf("Failed to create WhatsApp client: %v", err))
 	}
